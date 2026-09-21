@@ -1,0 +1,1592 @@
+
+<!doctype html>
+
+<html lang="en">
+	<head>
+		<script src="/js/site-util.js" type="text/javascript"></script>
+		<meta
+			content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=contain"
+			name="viewport"
+		/>
+		<meta name="description" content="A mad scientist's world." />
+		<link href="/manifest.json" rel="manifest" />
+	<link rel="icon" type="image/png" href="money angry.png">
+		<meta charset="utf-8" />
+		<title>ENTER?</title>
+		<link href="/style.css" media="all" rel="stylesheet" type="text/css" />
+		<link
+			href="/style/webring.css"
+			media="all"
+			rel="stylesheet"
+			type="text/css"
+		/>
+		<style>
+			:root {
+				/* COLORS */
+				--inspect-color: rgb(5, 27, 61);
+				--inspect-color-subtle: rgb(0, 83, 146);
+				--filter-black-yellow: invert(94%) sepia(40%) saturate(1480%)
+					hue-rotate(2deg) brightness(102%) contrast(106%);
+
+				/* DEMON */
+				--demon-top-offset: 30px;
+				--demon-image-width: 527px;
+
+				/* Z-INDEX */
+				--demon-z: 10;
+				--email-z: 999;
+				--enter-z: 100;
+				--inspect-z: 13;
+				--warning-z: 9;
+				--fixed-z: 100;
+
+				/* SMALL SCREEN VARIABLES */
+				--sm-brain-width: 100px;
+				--sm-margin: 20px;
+			}
+
+			/** ANIMATION */
+			@keyframes vertical-brains {
+				0% {
+					background-position: 0px 0px;
+				}
+				100% {
+					background-position: 0px 550px;
+				}
+			}
+			@keyframes horizontal-texture {
+				0% {
+					background-position: 0px 0px;
+				}
+				100% {
+					background-position: 666px 0px;
+				}
+			}
+			@keyframes floating {
+				0% {
+					transform: translate(0px, 0px);
+				}
+				100% {
+					transform: translate(0px, 5px);
+				}
+			}
+			@keyframes brains-glow {
+				0% {
+					opacity: 1;
+				}
+				100% {
+					opacity: 0.5;
+				}
+			}
+			@keyframes bounce {
+				0% {
+					transform: translate(0px, -5px);
+				}
+				100% {
+					transform: translate(0px, 5px);
+				}
+			}
+
+			/** BODY */
+			html {
+				scroll-behavior: smooth;
+				background: transparent;
+			}
+			body {
+				background-color: #000;
+				margin: 0;
+				height: 100dvh;
+				overflow: hidden;
+			}
+			.top-left {
+				top: 0%;
+				left: 0%;
+			}
+			.bottom-right {
+				bottom: 0%;
+				right: 0%;
+				transform: rotate(-180deg);
+			}
+			.top-right {
+				top: 0%;
+				right: 0%;
+			}
+			.small-screen-only {
+				display: none;
+			}
+			.link {
+				cursor: url("/img/cursor-point.png"), default !important;
+			}
+
+			/* PLANE */
+			.plane-container {
+				position: absolute;
+				overflow: hidden;
+				width: 100%;
+				height: fit-content;
+				height: 200px;
+			}
+			.plane-container img {
+				width: 100%;
+				height: 200px;
+				image-rendering: pixelated;
+				margin: 0;
+				padding: 0;
+				opacity: 0.5;
+			}
+			#plane-top {
+				top: 0%;
+				transform: scaleY(-1);
+			}
+			#plane-bottom {
+				bottom: 0%;
+			}
+
+			/* WINDOWS */
+			#windows-container {
+				position: absolute;
+				overflow: none;
+				margin: auto;
+
+				display: grid;
+				grid: repeat(4, 1fr) / repeat(4, 1fr);
+				justify-items: center;
+
+				height: calc(412px);
+				width: 100%;
+
+				top: 50%;
+				transform: translate(0%, -50%);
+				opacity: 0.5;
+			}
+			.mini-window {
+				width: calc(100% - 20px);
+				height: calc(200px);
+				opacity: 1;
+				margin: 5px;
+
+				border-style: groove;
+				border-width: 3px;
+				border-color: rgba(255, 255, 255, 0.363);
+
+				background-image: url("/img/asset/garden.png");
+				background-size: cover;
+				background-position: center center;
+
+				filter: grayscale() brightness(50%);
+				image-rendering: pixelated;
+				object-fit: cover;
+				animation: bounce 0s ease-in-out alternate infinite;
+			}
+
+			/** FULL CONTAINER */
+			#full-container {
+				height: 100vh;
+				width: 100%;
+				margin: auto;
+				position: relative;
+				display: flex;
+				justify-content: center;
+			}
+
+			/** MAIN CONTAINER */
+			#main-container {
+				height: 100dvh;
+				width: 100vw;
+				position: relative;
+				max-width: 1100px;
+				display: flex;
+				justify-content: center;
+			}
+
+			/** BRAINS */
+			.brains-container {
+				width: 300px;
+				margin: 0px 10px;
+				position: relative;
+			}
+			.brains-container.left {
+				transform: scaleX(-1);
+				margin-left: 0;
+			}
+			.brains-container.right {
+				margin-right: 0;
+			}
+			.brains-glow {
+				position: absolute;
+				left: 50%;
+				transform: translate(-50%, 0%);
+
+				width: 100px;
+				height: 100%;
+
+				box-shadow: 0px 0px 150px rgb(255, 90, 228);
+				animation: brains-glow 0s ease-in-out alternate infinite;
+				overflow: hidden;
+			}
+			.brains {
+				position: absolute;
+				width: 100%;
+				height: 100%;
+				background-image: url("/img/asset/brains.png");
+				animation: vertical-brains 60s linear infinite;
+			}
+
+			/** LOGO */
+			.logo-container {
+				position: absolute;
+				padding: 0px 10px;
+				z-index: 15;
+			}
+			.logo-image {
+				image-rendering: pixelated;
+				margin-top: 20px;
+				filter: sepia(40%) saturate(1480%) hue-rotate(2deg) brightness(102%)
+					contrast(106%);
+			}
+			.logo-text {
+				width: fit-content;
+				margin: 0;
+
+				color: var(--inspect-color);
+				text-shadow: rgb(123, 255, 0) 1px 0 10px;
+
+				font-family: "Consolas", monospace;
+				letter-spacing: 5px;
+				font-size: 1em;
+			}
+
+			/** RATING */
+			.rating-container {
+				position: absolute;
+				top: 5px;
+				right: 5px;
+				z-index: 15;
+			}
+			#rating-image {
+				height: calc(84px);
+				image-rendering: pixelated;
+			}
+			#rating-image-small {
+				height: calc(84px);
+				image-rendering: pixelated;
+				display: none;
+			}
+
+			/** DEMON */
+			#demon {
+				position: relative;
+				margin-top: var(--demon-top-offset);
+				margin-bottom: var(--demon-top-offset);
+
+				image-rendering: pixelated;
+				user-select: none;
+				z-index: var(--demon-z);
+
+				width: 527px;
+				aspect-ratio: 527/894;
+			}
+			#demon-container {
+				height: fit-content;
+				width: fit-content;
+				position: relative;
+				margin: auto;
+			}
+			#demon-glow {
+				position: absolute;
+				top: calc(265px + var(--demon-top-offset));
+				left: 263px;
+				width: min(220px, 39.5dvw);
+				height: min(230px, 41.3dvw);
+				transform: translate(-50%, -50%);
+
+				box-shadow:
+					0px 0px 500px greenyellow,
+					0px 0px 500px rgba(172, 255, 47, 0.5);
+				border-radius: 100%;
+				z-index: -1;
+			}
+
+			/** EMAIL */
+			#email-container {
+				position: absolute;
+				padding: calc(10px * 1) calc(10px * 1);
+				top: calc(85px * 1 + var(--demon-top-offset));
+				right: calc(-100px * 1);
+
+				font-family: "Consolas", monospace;
+				font-size: calc(0.9em * 1);
+				letter-spacing: 1px;
+
+				border-style: solid;
+				border-width: 1px;
+				border-radius: 20px;
+
+				box-sizing: border-box;
+				border-color: rgb(175, 175, 0);
+				z-index: var(--email-z) !important;
+			}
+			#email-container:hover {
+				box-shadow: 0px 5px 15px rgba(145, 255, 0, 0.9);
+			}
+			#email {
+				width: fit-content;
+				margin: 0px auto;
+				padding: 5px 0;
+				position: relative;
+			}
+			#email_icon {
+				filter: var(--filter-black-yellow);
+				height: 20px;
+				margin: 0px;
+			}
+			#e-m-a,
+			#i-l {
+				display: none;
+			}
+
+			/** ENTER */
+			#enter-container {
+				position: absolute;
+
+				top: calc(282px + var(--demon-top-offset));
+				left: 263px;
+				transform: translate(-55px, -55px);
+
+				color: white;
+				background-color: black;
+
+				border-color: rgb(255, 104, 187);
+				border-style: solid;
+				border-radius: 100%;
+				border-width: 1px;
+
+				width: min(110px * 1);
+				height: min(110px * 1);
+				box-sizing: border-box;
+
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+
+				transition:
+					box-shadow 0.5s ease,
+					background-color 0.5s ease,
+					color 0.5s ease,
+					border-color 0.5s ease;
+
+				z-index: var(--enter-z);
+			}
+			#enter-container:hover {
+				box-shadow: 0px 0px 20px rgb(83, 255, 68);
+				border-color: green;
+				background-color: rgb(255, 255, 255);
+				color: black;
+			}
+			#top-enter-text,
+			#bottom-enter-text {
+				font-family: "Bodoni Ornaments ITC", monospace;
+				font-size: min(0.6em, 1.5dvw);
+				margin: 0;
+				letter-spacing: 2px;
+			}
+			#enter-text {
+				font-family: "Silkscreen", monospace;
+				font-size: calc(1.2em * 1);
+				margin-bottom: calc(5px * 1);
+				margin-top: 0px;
+			}
+
+			/** LINKS */
+			.link {
+				background-color: black;
+				padding: calc(5px * 1) calc(7px * 1);
+				margin: 0;
+
+				font-size: min(2.8dvw, 1em);
+				font-family: "Consolas", monospace;
+
+				display: flex;
+				gap: calc(8px * 1);
+				align-items: center;
+
+				transition:
+					background-color 0.2s,
+					color 0.2s !important;
+				border-bottom-style: none;
+			}
+			.link-icon {
+				height: calc(1em * 1);
+				width: calc(15px * 1);
+
+				image-rendering: pixelated;
+				filter: var(--filter-black-yellow);
+			}
+			.link-name {
+				margin: 0;
+				font-size: calc(1em * 1);
+			}
+			.link:hover {
+				background-color: var(--inspect-color);
+				color: black;
+				transition: none !important;
+			}
+			.link:hover .link-icon {
+				filter: none;
+			}
+
+			/** LINKS PRIMARY */
+			#links-primary-container {
+				position: absolute;
+				top: calc(80px * 1 + var(--demon-top-offset));
+				left: calc(-85px * 1);
+			}
+			#links-primary-line {
+				width: calc(250px * 1);
+				top: calc(200px * 1);
+				left: calc(265px * 1);
+				transform: rotate(220deg);
+			}
+
+			/** LINKS SECONDARY */
+			#links-secondary-container {
+				position: absolute;
+				top: calc(240px * 1 + var(--demon-top-offset));
+				left: calc(-85px * 1);
+			}
+			#links-secondary-line {
+				width: calc(250px * 1);
+				top: calc(105px * 1);
+				left: calc(255px * 1);
+				transform: rotate(200deg);
+			}
+
+			/** LINKS TERTIARY */
+			#links-tertiary-container {
+				position: absolute;
+				top: calc(320px * 1 + var(--demon-top-offset));
+				left: calc(-85px * 1);
+			}
+			#links-tertiary-line {
+				width: calc(180px * 1);
+				top: calc(120px * 1);
+				left: calc(160px * 1);
+				transform: rotate(210deg);
+			}
+
+			/* SUPPORT LINKS */
+			#support-links-container {
+				position: absolute;
+				top: calc(270px * 1 + var(--demon-top-offset));
+				right: calc(-110px * 1);
+				transform: translate(-50%, -50%);
+			}
+			#support-links-line {
+				width: calc(180px * 1);
+				top: calc(100px * 1);
+				right: calc(40px * 1);
+				transform: rotate(-22deg);
+			}
+			.inspect-title {
+				background: url("img/texture/mountain-gray.png");
+			}
+
+			/* INTERNAL LINKS */
+			#internal-links-container {
+				position: absolute;
+				top: calc(370px * 1 + var(--demon-top-offset));
+				right: calc(-80px * 1);
+				transform: translate(-50%, -50%);
+			}
+			#internal-links-line {
+				width: calc(140px * 1);
+				top: calc(110px * 1);
+				right: calc(-15px * 1);
+				transform: rotate(-30deg);
+			}
+
+			/* WEBRING CONTAINER */
+			#webring-container {
+				position: absolute;
+				top: calc(540px * 1 + var(--demon-top-offset));
+				right: calc(-190px * 1);
+				width: calc(230px * 1);
+				height: fit-content;
+				font-size: calc(0.8rem * 1);
+
+				background-color: black;
+				border-style: solid;
+				border-width: 1px;
+				border-color: rgb(112, 112, 11);
+				box-sizing: border-box;
+				border-radius: 10px;
+				border-bottom-right-radius: 0px;
+				box-shadow: 0px 4px 0px var(--inspect-color-subtle);
+
+				z-index: 11;
+			}
+			.webring-content p,
+			.webring-title p {
+				width: 100%;
+				height: 100%;
+				color: var(--inspect-color);
+				font-family: "Consolas", monospace;
+				overflow: hidden;
+				margin: 0;
+			}
+			#webring-line {
+				width: calc(160px * 1);
+				top: calc(117px * 1);
+				right: calc(176px * 1);
+				transform: rotate(-30deg);
+				z-index: -1;
+				display: none;
+			}
+			#webrings,
+			.webring-content {
+				scrollbar-color: var(--inspect-color-subtle) rgb(63, 63, 0);
+				display: flex;
+				flex-direction: column;
+				color: yellow;
+				border-bottom-left-radius: 10px;
+				border-bottom-right-radius: 10px;
+			}
+			.webring-content {
+				overflow-y: scroll;
+				overflow-x: hidden;
+				scrollbar-width: thin;
+				background: black;
+				padding: 10px;
+				padding-bottom: 5px;
+				height: 140px;
+			}
+			.webring-content hr {
+				width: 100%;
+				border: 1px dashed rgb(110, 110, 0);
+				border-bottom: none;
+			}
+			.webring-title {
+				background: url("img/texture/mountain-gray.png");
+				border-bottom: 1px solid rgb(109, 109, 60);
+				color: yellow;
+				letter-spacing: 10px;
+				padding: 5px 0px;
+				border-top-left-radius: 10px;
+				border-top-right-radius: 10px;
+			}
+			.webring-title p {
+				transform: translateX(3px);
+				text-transform: uppercase;
+			}
+			.webring-title p::before {
+				content: "Webrings";
+			}
+			.webring {
+				filter: sepia(1) brightness(0.8) saturate(4) hue-rotate(15deg);
+			}
+			.webring:hover {
+				filter: none;
+			}
+			.webring {
+				padding: 10px 0px;
+				border-bottom: 1px dashed rgb(109, 109, 60);
+			}
+			#webrings-page-link hr {
+				display: none;
+			}
+			#webrings-page-link:hover .webring-title {
+				background: rgba(255, 255, 0, 0.2);
+				color: black;
+			}
+			#webrings > :last-child {
+				padding-bottom: 0px;
+				border-bottom: none;
+			}
+			#view-all-webrings {
+				text-decoration: underline;
+			}
+			#view-all-webrings:hover {
+				color: white;
+			}
+
+			/* REDUCED MOTION */
+			#reducedmotion-wrapper {
+				position: absolute;
+				top: 0%;
+				right: 0%;
+				color: yellow;
+				z-index: 100;
+				padding: 5px;
+				padding-top: 10px;
+			}
+			#reducedmotion-wrapper a:hover {
+				opacity: 0.5;
+			}
+			#reducedmotion-wrapper img {
+				width: 20px;
+				height: 20px;
+				filter: var(--filter-black-yellow);
+			}
+
+			/* WARNING */
+			#warning-container {
+				position: absolute;
+				font-family: "Consolas", monospace;
+				left: calc(-220px * 1);
+				bottom: calc(215px * 1 - var(--demon-top-offset));
+				background-color: black;
+				border-width: 1px;
+				border-style: solid;
+				border-color: var(--inspect-color);
+				border-radius: 90px;
+
+				width: calc(290px * 1);
+				height: calc(250px * 1);
+				padding: calc(40px * 1);
+
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+				font-style: italic;
+				box-sizing: border-box;
+
+				z-index: var(--warning-z);
+				gap: 10px;
+			}
+			#warning {
+				margin: 0 auto;
+				font-size: calc(0.8em * 1);
+			}
+			#warning-icon {
+				filter: var(--filter-black-yellow);
+				height: 30px;
+			}
+			.warning-symbol {
+				display: none;
+			}
+			#w-short {
+				display: none;
+			}
+
+			/** INSPECT STYLING */
+			.inspect-container {
+				z-index: var(--inspect-z);
+			}
+			.inspect-container.left {
+				box-shadow: -3px 0px var(--inspect-color-subtle);
+			}
+			.inspect-container.left > :first-child .inspect-row {
+				border-top-right-radius: 10px;
+			}
+			.inspect-container.left > :nth-last-child(2) .inspect-row {
+				border-bottom-right-radius: 10px;
+			}
+			.inspect-container.right {
+				box-shadow: 3px 0px var(--inspect-color-subtle);
+			}
+			.inspect-container.right > :first-child .inspect-row,
+			.inspect-container.right > :first-child.inspect-title {
+				border-top-left-radius: 10px;
+			}
+			.inspect-container.right > :nth-last-child(2) .inspect-row {
+				border-bottom-left-radius: 10px;
+			}
+			#internal-links-container > :nth-child(2) .inspect-row {
+				border-top-left-radius: 10px;
+			}
+			.inspect-row {
+				color: var(--inspect-color);
+				background-color: black;
+
+				border-color: var(--inspect-color-subtle);
+				border-style: solid;
+				border-width: 1px;
+				border-bottom-style: none;
+
+				box-sizing: border-box;
+				position: relative;
+
+				z-index: var(--inspect-z);
+			}
+			.row-text {
+				font-family: "Consolas", monospace;
+				font-size: calc(1em * 1);
+
+				width: fit-content;
+				margin: auto;
+				padding: calc(5px * 1);
+			}
+
+			.circle-container {
+				background-image: url("img/texture/mountain-gray.png");
+				color: var(--inspect-color);
+
+				animation:
+					circle-animation 0s linear infinite,
+					floating 0s ease-in-out alternate infinite;
+				transition: box-shadow 0.1s ease;
+
+				box-shadow: 0px 5px 10px rgba(145, 255, 0, 0.5);
+				box-sizing: border-box;
+			}
+			.circle-container:hover {
+				box-shadow: 0px 5px 20px rgba(145, 255, 0, 1);
+			}
+
+			.line {
+				position: absolute;
+				transform-origin: 0% 0%;
+				height: 1px;
+
+				border-top-style: solid;
+				border-width: 1px;
+				border-color: var(--inspect-color);
+			}
+			.line-endpoint {
+				position: relative;
+				background-color: rgb(0, 0, 0);
+				width: calc(20px * 1);
+				height: calc(20px * 1);
+
+				border-color: var(--inspect-color);
+				border-style: solid;
+				border-width: 1px;
+				border-radius: 100%;
+
+				transform: translate(0%, -50%);
+				transition:
+					box-shadow 0.1s linear,
+					background-color 0.1s linear;
+			}
+			.inspect-container:hover .line-endpoint {
+				background-color: var(--inspect-color);
+				box-shadow: 0px 0px 5px var(--inspect-color);
+				transition: none !important;
+			}
+			.inspect-container > :nth-last-child(2) .link {
+				border-bottom-style: solid;
+			}
+			.line:hover .line-endpoint {
+				background-color: black;
+				box-shadow: none;
+			}
+
+			#site-container {
+				display: block;
+				position: absolute;
+				height: 100dvh !important;
+				width: 100dvw !important;
+				z-index: 9999;
+				background-color: #ff0000;
+				display: none;
+			}
+
+			/* SMALL SCREEN ADJUSTMENTS */
+			@media screen and (max-width: 1600px) {
+				.brains-glow {
+					transform: translate(0%, 0%);
+				}
+			}
+			@media screen and (max-width: 1300px) {
+				.brains-glow {
+					display: none;
+				}
+				#reducedmotion-wrapper {
+					padding-top: 5px;
+				}
+			}
+			@media screen and (max-width: 1200px) {
+				#main-container {
+					position: static;
+				}
+				.logo-container {
+					background: linear-gradient(
+						150deg,
+						rgba(0, 0, 0, 1) 0%,
+						rgba(255, 255, 255, 0) 50%,
+						rgba(255, 255, 255, 0) 100%
+					);
+				}
+			}
+			@media screen and (max-width: 1000px) {
+				#warning-container {
+					border-radius: 5%;
+					border-top-right-radius: 25%;
+					padding: 10px;
+					width: 160px;
+					height: 270px;
+					left: -145px;
+					bottom: 205px - var(--demon-top-offset);
+				}
+				#warning {
+					text-align: left;
+					margin: 0;
+				}
+				#refresh-button {
+					top: 98%;
+					left: 98%;
+					transform: translate(-100%, -100%);
+				}
+				#webring-container {
+					right: -145px;
+					width: 160px;
+				}
+				#webring-line {
+					right: 126px;
+				}
+			}
+			/** Not likely a situation that would ever occur naturally, but handling it soothes my wretched mind. */
+			@media screen and (max-height: 800px) {
+				.logo-container.bottom-right {
+					display: none;
+				}
+				#warning-container {
+					position: fixed;
+					left: 0%;
+					bottom: 0%;
+
+					height: 100px;
+					width: 70%;
+					padding: 10px;
+
+					border-radius: 0%;
+					animation: none;
+					z-index: var(--fixed-z);
+				}
+				#warning-icon {
+					display: none;
+				}
+				#refresh-button {
+					top: auto;
+					bottom: 5px;
+				}
+				#webring-container {
+					position: fixed;
+					transform: none;
+					top: auto;
+					bottom: 0%;
+					right: 0%;
+					height: 100px;
+					width: 30%;
+					z-index: var(--fixed-z);
+					border-top-left-radius: 0;
+					border-top-right-radius: 0;
+				}
+				.webring-content {
+					height: 50px;
+				}
+				#webring-line {
+					display: none;
+				}
+			}
+			@media screen and (max-width: 900px) {
+				/** BODY */
+				body {
+					overflow: auto;
+					height: fit-content;
+					position: relative;
+					background-attachment: fixed;
+				}
+				.small-screen-only {
+					display: block;
+				}
+				#plane-bottom {
+					display: none;
+				}
+
+				/** RATING */
+				#rating-image {
+					display: none;
+				}
+				#rating-image-small {
+					display: block;
+				}
+
+				/** INSPECT STYLING */
+				.inspect-container.left,
+				.inspect-container.right {
+					box-shadow: none;
+				}
+				.inspect-row {
+					width: 80%;
+					margin: auto;
+					padding-left: 5px;
+					border-bottom-style: solid !important;
+				}
+				.inspect-title {
+					padding-top: 10px;
+					width: 50%;
+					border-style: none !important;
+					background: transparent;
+				}
+				.inspect-title .row-text {
+					font-size: 1.2em;
+					text-transform: uppercase;
+				}
+				.line,
+				.line-endpoint {
+					display: none;
+				}
+
+				/** ORDER */
+				#links-primary-container {
+					order: 1;
+				}
+				#links-secondary-container {
+					order: 2;
+				}
+				#links-tertiary-container {
+					order: 3;
+				}
+				#support-links-container {
+					order: 4;
+				}
+				#internal-links-container {
+					order: 5;
+				}
+				#email-container {
+					order: 6;
+				}
+				#webring-container {
+					order: 7;
+				}
+
+				/** PLANES */
+				.plane-container {
+					z-index: -1;
+				}
+
+				/** CONTAINERS */
+				#full-container {
+					height: fit-content;
+				}
+				#main-container {
+					width: 100%;
+					height: fit-content;
+				}
+				#windows-container {
+					display: none;
+				}
+				#links-primary-container,
+				#links-secondary-container,
+				#links-tertiary-container,
+				#support-links-container,
+				#internal-links-container,
+				#warning-container,
+				#webring-container {
+					position: relative;
+					transform: none;
+					box-sizing: border-box;
+					box-shadow: none;
+					width: 100%;
+
+					top: 0;
+					left: 0;
+					right: 0;
+					bottom: 0;
+				}
+
+				/** BRAINS */
+				.brains-container {
+					position: absolute;
+					width: var(--sm-brain-width);
+					height: 100%;
+					z-index: -1;
+				}
+				.brains-container.left {
+					left: 0%;
+				}
+				.brains-container.right {
+					right: 0%;
+				}
+
+				/** DEMON */
+				#demon-container {
+					margin: 0px auto;
+					width: calc(100%);
+
+					display: flex;
+					flex-direction: column;
+					justify-content: center;
+				}
+				#demon {
+					position: relative;
+					max-height: none;
+					width: var(--demon-image-width);
+					max-width: calc(100% - var(--sm-margin));
+					margin: 20px auto;
+					image-rendering: auto;
+				}
+				#demon-glow {
+					top: 33%;
+					left: 50%;
+				}
+				#enter-container {
+					top: 28%;
+					left: 50%;
+					transform: translateX(-50%);
+					width: min(120px, 21.5dvw);
+					height: min(120px, 21.5dvw);
+				}
+				#enter-text {
+					font-size: min(1.7em, 4.5dvw);
+				}
+
+				/** LINKS */
+				.link-icon {
+					height: 30px;
+					width: 30px;
+				}
+				.link-name {
+					font-size: 1.5em;
+				}
+				.link {
+					display: inline-flex;
+					flex-direction: column;
+					width: calc(50% - 20px);
+					max-width: 150px;
+					padding: 10px 10px;
+					margin: 5px auto;
+					border-radius: 10px;
+					border-bottom-width: 5px;
+					background: rgba(0, 0, 0, 0.6);
+				}
+				#links {
+					padding: 10px 0px;
+					position: relative;
+				}
+				#links .inspect-container {
+					display: inline;
+				}
+				#links-overlay {
+					position: absolute;
+					width: 100%;
+					height: calc(100% + 20px);
+					transform: translateY(-10px);
+					background-color: rgb(52, 129, 87);
+					mix-blend-mode: hard-light;
+				}
+
+				/** EMAIL */
+				#email-container {
+					border-radius: 0%;
+					box-shadow: none;
+					border-color: rgb(139, 139, 0);
+					font-size: 1em;
+					animation: none;
+					position: relative;
+					width: 100%;
+					margin: 0;
+					transform: none;
+					top: 0;
+					left: 0;
+					right: 0;
+					bottom: 0;
+					height: fit-content;
+					padding: 0;
+				}
+				#email_icon {
+					display: none;
+				}
+
+				/** WEBRING */
+				#webring-container {
+					border: none;
+					height: fit-content;
+					border-radius: 0px;
+				}
+				.webring {
+					filter: none;
+					border-bottom: none;
+				}
+				.webring-content {
+					border-radius: 0px;
+					font-size: 0.85rem;
+					height: fit-content;
+					overflow: hidden;
+				}
+				.webring-title {
+					font-size: 1.2rem;
+					box-sizing: border-box;
+					padding: 10px 0px;
+					background: black;
+					border-bottom: 0px;
+				}
+				.webring-title p {
+					margin: auto;
+					letter-spacing: 0px;
+					width: 100%;
+					transform: none;
+				}
+				.webring-title p::before {
+					content: "View all webrings";
+				}
+				.webring:not(#qtpoc-ring) {
+					display: none;
+				}
+				#qtpoc-ring {
+					padding: 5px 0px;
+				}
+				.webring-title {
+					font-size: 0.9rem;
+				}
+				.webring-title p {
+					color: rgb(163, 163, 0);
+				}
+				#webrings-page-link {
+					color: rgb(163, 163, 0);
+					text-decoration: underline;
+					text-transform: uppercase;
+					order: 999;
+					width: 95%;
+					margin: auto;
+				}
+				#webrings-page-link:hover {
+					color: yellow;
+				}
+				#webrings-page-link hr {
+					display: block;
+					border: 1px dashed rgb(110, 110, 0);
+					border-bottom: none;
+					width: auto;
+					margin: 0 auto;
+				}
+				#webring-container {
+					display: flex;
+					flex-direction: column;
+				}
+				#view-all-webrings {
+					display: none;
+				}
+
+				/** WARNING */
+				#warning-container {
+					position: sticky;
+					top: unset;
+					bottom: 40px;
+					z-index: 20;
+					width: 100%;
+					height: fit-content;
+					padding: 10px 5px 15px 5px;
+
+					border-radius: 0%;
+					box-shadow: none;
+					animation: none;
+					flex-direction: row;
+					border: none;
+					justify-content: center;
+					align-items: center;
+					background: linear-gradient(
+						0deg,
+						rgba(0, 0, 0, 0.8) 0%,
+						rgba(0, 0, 0, 0.7) 50%,
+						rgba(0, 0, 0, 0.5) 80%,
+						rgba(0, 0, 0, 0) 100%
+					);
+					border-bottom: 1px solid rgb(109, 109, 0);
+					gap: 2px;
+				}
+				#warning {
+					font-size: 0.8rem;
+					text-align: center;
+					margin: auto 0;
+					text-shadow:
+						1px 1px 0 black,
+						1px -1px 0 black,
+						-1px -1px 0 black,
+						-1px 1px 0 black,
+						-2px 2px 0 black;
+				}
+				#warning-icon {
+					display: none;
+				}
+				#w-long {
+					display: none;
+				}
+				#w-short {
+					display: inline;
+				}
+
+				/** LOGO */
+				.logo-container.top-left {
+					background: none;
+					transform-origin: 0% 0%;
+					transform: translateX(5px) translateY(min(300%, 44dvw)) rotate(-90deg);
+					padding: 0;
+				}
+				.logo-container.bottom-right {
+					display: none;
+				}
+				.logo-image {
+					margin: 0;
+					width: min(42dvw, 250px);
+				}
+				.logo-text {
+					margin-left: auto;
+					font-size: min(3dvw, 1em);
+				}
+
+				/** SCROLL PROMPT */
+				#scroll-prompt {
+					z-index: 999;
+					position: sticky;
+					bottom: 0%;
+					max-height: 44px;
+
+					background-color: black;
+					color: var(--inspect-color);
+					border-style: solid;
+					border-width: 1px;
+
+					font-size: min(4dvw, 1.5em);
+					font-family: "Consolas", monospace;
+				}
+				#scroll-prompt p {
+					color: var(--inspect-color);
+					padding: 10px 0px;
+					margin: 0;
+				}
+			}
+
+			/* Browser weirdness */
+			@supports (not (-webkit-hyphens: none)) and (not (-moz-appearance: none)) {
+				.brains {
+					animation: none;
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<!-- PLANES -->
+		<div class="plane-container" id="plane-bottom">
+			<img alt="" src="/img/asset/loop-plane.png" />
+		</div>
+		<div class="plane-container" id="plane-top">
+			<img alt="" src="/img/asset/loop-plane.png" />
+		</div>
+		<!-- WINDOWS -->
+		<div id="windows-container">
+			<div class="mini-window"></div>
+			<div class="mini-window" style="animation-delay: 0.5s"></div>
+			<div class="mini-window" style="animation-delay: 1s"></div>
+			<div class="mini-window" style="animation-delay: 1.5s"></div>
+			<div class="mini-window"></div>
+			<div class="mini-window" style="animation-delay: 0.5s"></div>
+			<div class="mini-window" style="animation-delay: 1s"></div>
+			<div class="mini-window" style="animation-delay: 1.5s"></div>
+		</div>
+		<div id="full-container">
+			<div class="brains-container left">
+				<div class="brains-glow"></div>
+				<div class="brains rm-pause"></div>
+			</div>
+			<div id="main-container">
+				<!-- LOGO -->
+				<div class="logo-container top-left">
+					<img
+						alt="espimyte"
+						class="logo-image"
+						src="/img/asset/espimyte-logo.png"
+					/>
+					<p class="logo-text">ESPIMYTE</p>
+				</div>
+				<div class="logo-container bottom-right">
+					<img
+						alt="espimyte"
+						class="logo-image"
+						src="/img/asset/espimyte-logo.png"
+					/>
+					<p class="logo-text">ESPIMYTE</p>
+				</div>
+				<!-- RATING -->
+				<div class="rating-container top-right"></div>
+				<div id="demon-container">
+					<!-- DEMON AND ENTRANCE -->
+					<div id="demon">
+						<img
+							style="width: 100%"
+							alt="demon"
+							src="hands.png"
+						/>
+						<a href="/home.html">
+							<div id="enter-container">
+								<p id="top-enter-text">espy</p>
+								<p id="enter-text">ENTER</p>
+								<p id="bottom-enter-text">world</p>
+							</div>
+						</a>
+						<div id="demon-glow"></div>
+					</div>
+
+					<!-- EMAIL -->
+					<div
+						class="circle-container rm-pause"
+						id="email-container"
+						style="z-index: 5"
+					>
+						<img id="email_icon" src="/svg/envelope.svg" />
+						<p id="email">
+							espi<span id="e-m-a">a3645778631892l</span>myte@gm<span id="i-l"
+								>y904378323124d</span
+							>ail.com
+						</p>
+					</div>
+					<!-- WARNING -->
+					<div class="circle-container rm-pause" id="warning-container">
+						<img alt="" id="warning-icon" src="svg/warning.svg" />
+						<p id="warning">
+							<span id="w-long">
+								This site contains frequent use of visual movement and
+								javascript.<br /><br />This site was created with a mature
+								audience in mind. Viewer discretion is advised.</span
+							>
+							<span id="w-short">
+								Contains visual movement and javascript. Viewer discretion is
+								advised.
+							</span>
+						</p>
+					</div>
+					<!-- WEBRINGS -->
+					<div class="inspect-container" id="webring-container">
+						<a id="webrings-page-link" href="/webrings.html">
+							<hr />
+							<div class="webring-title">
+								<p></p>
+							</div>
+						</a>
+						<div class="webring-overlay"></div>
+
+						<div class="webring-content">
+							<div id="webrings">
+								<!-- WEBRINGS START -->
+								<div id="qtpoc-ring" class="webring" style="order: 0">
+									<p>
+										<a
+											style="margin-bottom: 5px; padding: 0px"
+											href="https://qtpoc-ring.netlify.app/"
+											><span id="qtpoc-ring-index">QTPOC Webring</span></a
+										><br style="margin-bottom: 2px" /><a
+											href="https://qtpoc-ring.netlify.app/previous"
+											>&lt;&lt; prev</a
+										>
+										<a href="https://qtpoc-ring.netlify.app/random">random</a>
+										<a href="https://qtpoc-ring.netlify.app/next"
+											>next &gt;&gt;</a
+										>
+									</p>
+								</div>
+								<div id="tropical-rice-bowl" class="webring" style="order: 1">
+									<div id="centerTRB" style="position: relative">
+										<a
+											href="https://loserlost.neocities.org/"
+											style="
+												position: absolute;
+												top: 0%;
+												left: 0%;
+												z-index: 901;
+											"
+											><img
+												src="/ext/webring/trb-arrow.png"
+												style="max-width: 100%; width: 25px" /></a
+										><a
+											href="https://astracelestine.nekoweb.org"
+											style="
+												position: absolute;
+												z-index: 901;
+												top: 0%;
+												right: 0%;
+											"
+											><img
+												src="/ext/webring/trb-arrow.png"
+												style="
+													max-width: 100%;
+													width: 25px;
+													transform: scaleX(-1);
+												" /></a
+										><a
+											style="z-index: 900; position: relative"
+											href="https://astracelestine.nekoweb.org/webring/tropical-rice-bowl"
+											><img
+												src="/ext/webring/trb.png"
+												style="
+													max-width: 100%;
+													z-index: 0;
+													position: relative;
+													width: 250px;
+													height: 68px;
+												"
+										/></a>
+									</div>
+								</div>
+								<div id="online-webring" class="webring" style="order: 2">
+									<map name="onlinewidget"
+										><area
+											href="https://webring.ghostk.id/online/"
+											target="_blank"
+											shape="rect"
+											coords="20,14,167,24"
+											alt="The online webring"
+											title="The online webring" /><area
+											href="https://webring.ghostk.id/online/espy/previous"
+											target="_top"
+											shape="rect"
+											coords="7,27,60,36"
+											alt="Previous"
+											title="Previous" /><area
+											href="https://webring.ghostk.id/online/random"
+											target="_top"
+											shape="rect"
+											coords="74,27,126,36"
+											alt="Random"
+											title="Random" /><area
+											href="https://webring.ghostk.id/online/espy/next"
+											target="_top"
+											shape="rect"
+											coords="139,27,192,36"
+											alt="Next"
+											title="Next" /></map
+									><img
+										usemap="#onlinewidget"
+										src="https://ghostk.id/i/onlinegray.gif"
+										width="200"
+										height="40"
+										style="
+											width: 200px;
+											height: 40px;
+											max-width: none;
+											image-rendering: pixelated;
+										"
+										alt="A Windows style dialog box titled 'THE ONLINE WEBRING' with three clickable buttons labeled Previous, Random, and Next"
+									/>
+								</div>
+								<div id="no-ai-webring" class="webring" style="order: 3">
+									<div id="no-ai-webring">
+										<a
+											href="https://baccyflap.com/noai/?prv&s=esp"
+											target="_top"
+											><img
+												src="https://baccyflap.com/noai/valywidget0.gif"
+												alt="previous no ai webring site"
+												title="previous no ai webring site" /></a
+										><a href="https://baccyflap.com/noai" target="_blank"
+											><img
+												src="https://baccyflap.com/noai/valywidget1.gif"
+												alt="no ai webring"
+												title="no ai webring" /></a
+										><a href="https://baccyflap.com/noai/?rnd" target="_top"
+											><img
+												src="https://baccyflap.com/noai/valywidget2.gif"
+												alt="random no ai webring site"
+												title="random no ai webring site" /></a
+										><a
+											href="https://baccyflap.com/noai/?nxt&s=esp"
+											target="_top"
+											><img
+												src="https://baccyflap.com/noai/valywidget3.gif"
+												alt="next no ai webring site"
+												title="next no ai webring site"
+										/></a>
+									</div>
+								</div>
+								<div id="meta-ring" class="webring" style="order: 4">
+									<p>
+										<a href="https://meta-ring.hedy.dev/"
+											><span style="padding: 2px"><b>Meta Ring</b></span></a
+										><br style="margin-bottom: 2px" /><a
+											href="https://meta-ring.hedy.dev/previous"
+											>&lt;&lt;</a
+										>
+										<a href="https://meta-ring.hedy.dev/random">random</a>
+										<a href="https://meta-ring.hedy.dev/next">&gt;&gt;</a>
+									</p>
+								</div>
+								<div id="yuri-yaoi-webring" class="webring" style="order: 6">
+									<!-- Slitherbop's OCs -->
+									<div
+										style="
+											background-image:
+												linear-gradient(to top, #000 0%, #00000000 70%),
+												url(/ext/webring/yaoiyuri.png);
+											background-size: cover;
+											display: grid;
+											height: 100px;
+											width: 200px;
+											color: #fff;
+											font-family: Times New Roman;
+											font-size: 18px;
+											margin: auto;
+										"
+									>
+										<span
+											style="
+												display: inline-block;
+												align-self: end;
+												justify-self: center;
+												text-align: center;
+											"
+											><a
+												style="text-decoration: none; color: #fff"
+												href="https://www.virtuagirl.net/webring.htm#ESP0"
+												>⇐</a
+											>
+											<a
+												style="
+													text-decoration: none;
+													color: #fff;
+													font-size: 0.8em;
+												"
+												href="https://www.virtuagirl.net/yuriwebring"
+												>YAOI & YURI WEBRING</a
+											>
+											<a
+												style="text-decoration: none; color: #fff"
+												href="https://www.virtuagirl.net/webring.htm#ESP1"
+												>⇒</a
+											></span
+										>
+									</div>
+								</div>
+								<!-- WEBRINGS END -->
+							</div>
+						</div>
+
+						<div class="line" id="webring-line">
+							<div class="line-endpoint"></div>
+						</div>
+					</div>
+					<!-- LINKS -->
+					<div class="small-screen-only" id="scroll-prompt">
+						<a href="#links">
+							
+			<div class="brains-container right">
+				<div class="brains-glow"></div>
+				<div class="brains rm-pause" style="animation-direction: reverse"></div>
+			</div>
+			<div id="site-container"></div>
+		</div>
+		<script>
+			// FUN SURPRISE
+			console.log(
+				"%cgreetings scrublord :>",
+				"background: black; color: #83ff45; padding: 15px; font-size: 2em; border: 1px solid; display:block;",
+			);
+		</script>
+		<script>
+			const coral = window.location.hostname;
+			if (
+				coral !== atob("ZXNwaW15dGUuY29t") &&
+				coral !== atob("ZXNweS53b3JsZA==") &&
+				coral !== atob("MTI3LjAuMC4x") &&
+				coral !== atob("d3d3LmVzcHkud29ybGQ=") &&
+				coral !== atob("d3d3LmVzcGlteXRlLmNvbQ==")
+			) {
+				document.getElementById("site-container").style.display = "block";
+				alert(
+					atob(
+						"V0FSTklORzogVEhJUyBTSVRFIElTIERFVEVDVEVEIEFTIEJFSU5HIEhPU1RFRCBPTiBBIEZSQURVTEFOVCBET01BSU4uIElmIHlvdSBiZWxpZXZlIHRoYXQgdGhpcyBpcyBpbiBlcnJvciwgcGxlYXNlIGNvbnRhY3QgZXNwaW15dGUoQClnbWFpbC5jb20u",
+					),
+				);
+			}
+		</script>
+	</body>
+</html>

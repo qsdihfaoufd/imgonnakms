@@ -1,0 +1,733 @@
+/* =================================
+   COLORS
+================================= */
+
+:root {
+
+    --pink: #FDC1AF;
+    --lime: #ECEF8D;
+    --green: #3A7457;
+    --blue: #344559;
+    --purple: #420433;
+
+    --cream: #FFFBE7;
+
+}
+
+body {
+    zoom: 50%;
+}
+
+/* =================================
+   FONT
+================================= */
+
+@font-face {
+
+    font-family: "Dream Kudos";
+
+    src:
+        url("DreamKudos-Regular.ttf")
+        format("truetype");
+
+}
+
+
+/* =================================
+   RESET
+================================= */
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+
+    margin: 0;
+
+    min-height: 100vh;
+
+    background:
+
+        radial-gradient(
+            var(--pink) 1px,
+            transparent 1px
+        );
+
+    background-size: 20px 20px;
+
+    background-color: var(--purple);
+
+    font-family: "Dream Kudos", Arial, sans-serif;
+
+    color: var(--purple);
+
+}
+
+
+/* =================================
+   DESKTOP
+================================= */
+
+.desktop {
+
+    width: 1100px;
+
+    max-width: 95%;
+
+    margin: 40px auto;
+
+    border: 7px solid var(--blue);
+
+    border-radius: 25px;
+
+    background: var(--cream);
+
+    overflow: hidden;
+
+    box-shadow:
+
+        0 0 0 4px var(--pink),
+
+        12px 12px 0
+        rgba(33, 1, 36, .4);
+
+}
+
+
+/* =================================
+   TOP BAR
+================================= */
+
+.desktop-bar {
+
+    height: 42px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    padding: 0 15px;
+
+    background: var(--blue);
+
+    color: var(--lime);
+
+    border-bottom: 4px solid var(--purple);
+
+    font-family: Arial, sans-serif;
+
+    font-size: 13px;
+
+}
+
+
+/* =================================
+   MAIN WINDOW
+================================= */
+
+.main-window {
+
+    display: grid;
+
+    grid-template-columns:
+        minmax(500px, 1fr)
+        360px;
+
+    gap: 15px;
+
+    padding: 18px;
+
+    background:
+
+        repeating-linear-gradient(
+            45deg,
+            var(--cream),
+            var(--cream) 8px,
+            #f7f2cf 8px,
+            #f7f2cf 16px
+        );
+
+}
+
+
+/* =================================
+   MP3 PLAYER
+================================= */
+
+.mp3-player {
+
+    background: var(--blue);
+
+    border: 5px solid var(--purple);
+
+    border-radius: 12px;
+
+    padding: 7px;
+
+    box-shadow:
+        5px 5px 0 var(--green);
+
+}
+
+
+/* =================================
+   TITLE BAR
+================================= */
+
+.player-titlebar,
+.tetris-titlebar {
+
+    height: 34px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    padding: 0 10px;
+
+    background: var(--purple);
+
+    color: var(--pink);
+
+    border-radius: 5px;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 13px;
+
+}
+
+
+/* =================================
+   PLAYER SCREEN
+================================= */
+
+.player-screen {
+
+    display: grid;
+
+    grid-template-columns: 150px 1fr;
+
+    gap: 15px;
+
+    padding: 15px;
+
+    margin-top: 8px;
+
+    background: var(--green);
+
+    border: 3px solid var(--lime);
+
+}
+
+
+/* =================================
+   ALBUM ART
+================================= */
+
+.album-art {
+
+    width: 150px;
+
+    height: 150px;
+
+    background: var(--purple);
+
+    border: 5px solid var(--pink);
+
+    overflow: hidden;
+
+}
+
+
+.album-art img {
+
+    width: 100%;
+
+    height: 100%;
+
+    object-fit: cover;
+
+}
+
+
+/* =================================
+   SONG INFO
+================================= */
+
+.track-info {
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+
+    min-width: 0;
+
+}
+
+
+.now-playing {
+
+    color: var(--lime);
+
+    font-family: Arial, sans-serif;
+
+    font-size: 11px;
+
+    letter-spacing: 2px;
+
+}
+
+
+.song-title {
+
+    margin-top: 8px;
+
+    color: var(--pink);
+
+    font-size: 30px;
+
+    white-space: nowrap;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+}
+
+
+.artist {
+
+    margin-top: 5px;
+
+    color: var(--lime);
+
+    font-family: Arial, sans-serif;
+
+    font-size: 13px;
+
+}
+
+
+/* =================================
+   SEEK BAR
+================================= */
+
+.seek-area {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    padding: 12px 10px 5px;
+
+    color: var(--lime);
+
+    font-family: Arial, sans-serif;
+
+    font-size: 10px;
+
+}
+
+
+#seek-bar {
+
+    flex: 1;
+
+    accent-color: var(--pink);
+
+}
+
+
+/* =================================
+   CONTROLS
+================================= */
+
+.controls {
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    gap: 10px;
+
+    padding: 10px;
+
+}
+
+
+.controls button {
+
+    width: 42px;
+
+    height: 34px;
+
+    border: 3px solid var(--purple);
+
+    background: var(--lime);
+
+    color: var(--purple);
+
+    cursor: pointer;
+
+    font-weight: bold;
+
+}
+
+
+.controls button:hover {
+
+    background: var(--pink);
+
+    transform: translateY(-2px);
+
+}
+
+
+.controls .play-button {
+
+    width: 55px;
+
+    height: 45px;
+
+    background: var(--pink);
+
+    font-size: 18px;
+
+}
+
+
+/* =================================
+   VOLUME
+================================= */
+
+.volume {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    padding: 0 15px 10px;
+
+    color: var(--lime);
+
+    font-family: Arial, sans-serif;
+
+    font-size: 10px;
+
+}
+
+
+#volume {
+
+    flex: 1;
+
+    accent-color: var(--pink);
+
+}
+
+
+/* =================================
+   PLAYLIST
+================================= */
+
+.playlist-title {
+
+    padding: 8px 12px;
+
+    background: var(--purple);
+
+    color: var(--pink);
+
+    font-family: Arial, sans-serif;
+
+    font-size: 12px;
+
+}
+
+
+.playlist {
+
+    height: 180px;
+
+    overflow-y: auto;
+
+    background: #263b42;
+
+    border: 3px solid var(--purple);
+
+}
+
+
+.track {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    padding: 9px 12px;
+
+    color: var(--lime);
+
+    border-bottom: 1px dashed var(--green);
+
+    cursor: pointer;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 12px;
+
+}
+
+
+.track:hover {
+
+    background: var(--green);
+
+}
+
+
+.track.active {
+
+    background: var(--pink);
+
+    color: var(--purple);
+
+}
+
+
+.track-number {
+
+    width: 20px;
+
+    opacity: .7;
+
+}
+
+
+/* =================================
+   TETRIS
+================================= */
+
+.tetris-window {
+
+    background: var(--blue);
+
+    border: 5px solid var(--purple);
+
+    border-radius: 12px;
+
+    padding: 7px;
+
+    box-shadow:
+        5px 5px 0 var(--green);
+
+}
+
+
+.tetris-content {
+
+    display: flex;
+
+    gap: 10px;
+
+    padding: 10px;
+
+    background: var(--green);
+
+    margin-top: 8px;
+
+}
+
+
+/* =================================
+   GAME CANVAS
+================================= */
+
+.game-area {
+
+    background: #101c20;
+
+    border: 4px solid var(--purple);
+
+    width: 240px;
+
+    height: 480px;
+
+}
+
+
+#tetris {
+
+    display: block;
+
+    width: 240px;
+
+    height: 480px;
+
+}
+
+
+/* =================================
+   GAME INFO
+================================= */
+
+.game-info {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 8px;
+
+    width: 90px;
+
+}
+
+
+.score-box {
+
+    padding: 8px;
+
+    background: var(--lime);
+
+    border: 3px solid var(--purple);
+
+    text-align: center;
+
+}
+
+
+.score-box span {
+
+    display: block;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 9px;
+
+}
+
+
+.score-box strong {
+
+    font-size: 20px;
+
+}
+
+
+.game-info button {
+
+    padding: 8px;
+
+    background: var(--pink);
+
+    border: 3px solid var(--purple);
+
+    color: var(--purple);
+
+    cursor: pointer;
+
+    font-family: inherit;
+
+}
+
+
+.game-info button:hover {
+
+    background: var(--lime);
+
+}
+
+
+.controls-help {
+
+    padding: 8px;
+
+    background: var(--purple);
+
+    color: var(--lime);
+
+    font-family: Arial, sans-serif;
+
+    font-size: 8px;
+
+    line-height: 1.5;
+
+}
+
+
+/* =================================
+   FOOTER
+================================= */
+
+footer {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    padding: 10px 15px;
+
+    background: var(--purple);
+
+    color: var(--pink);
+
+    font-family: Arial, sans-serif;
+
+    font-size: 10px;
+
+}
+
+
+/* =================================
+   MOBILE
+================================= */
+
+@media (max-width: 900px) {
+
+    .main-window {
+
+        grid-template-columns: 1fr;
+
+    }
+
+}
+
+
+@media (max-width: 550px) {
+
+    .player-screen {
+
+        grid-template-columns: 1fr;
+
+    }
+
+    .album-art {
+
+        margin: auto;
+
+    }
+
+    .tetris-content {
+
+        flex-direction: column;
+
+    }
+
+}
